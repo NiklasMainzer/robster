@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guess the Song</title>
     <style>
-        /* Hide the iframe completely */
+        #startBtn {
+            font-size: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
         iframe {
             position: absolute;
             width: 1px;
@@ -18,10 +22,21 @@
 <body>
 
     <h2>Guess the Song!</h2>
-    
-    <iframe src="https://open.spotify.com/embed/track/4eVS2lXtlb2FCwXAdMhp5k?utm_source=generator"
+    <button id="startBtn">Start Music</button>
+
+    <iframe id="spotifyPlayer" src="https://open.spotify.com/embed/track/4eVS2lXtlb2FCwXAdMhp5k?utm_source=generator"
             width="300" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media;">
     </iframe>
+
+    <script>
+        document.getElementById("startBtn").addEventListener("click", function() {
+            const iframe = document.getElementById("spotifyPlayer");
+            iframe.style.width = "1px"; // Keep hidden
+            iframe.style.height = "1px";
+            iframe.style.opacity = "0";
+            this.style.display = "none"; // Hide button after clicking
+        });
+    </script>
 
 </body>
 </html>
