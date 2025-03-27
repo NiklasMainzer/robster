@@ -5,24 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guess the Song</title>
     <style>
-        #startBtn {
-            font-size: 20px;
-            padding: 10px 20px;
-            cursor: pointer;
+        .spotify-container {
+            width: 80px; /* Just enough space for the play button */
+            height: 80px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        iframe {
+            position: absolute;
+            top: -20px; /* Adjust to center the play button */
+            left: -100px; /* Move it so only the play button is visible */
+            width: 300px;
+            height: 80px;
+            border: none;
         }
     </style>
 </head>
 <body>
 
     <h2>Guess the Song!</h2>
-    <button id="startBtn">Start Music</button>
 
-    <script>
-        document.getElementById("startBtn").addEventListener("click", function() {
-            window.open("https://open.spotify.com/track/4eVS2lXtlb2FCwXAdMhp5k", "_blank");
-            this.style.display = "none"; // Hide button after clicking
-        });
-    </script>
+    <div class="spotify-container">
+        <iframe src="https://open.spotify.com/embed/track/4eVS2lXtlb2FCwXAdMhp5k?utm_source=generator"
+                frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+        </iframe>
+    </div>
 
 </body>
 </html>
