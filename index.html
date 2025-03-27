@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guess the Song!</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Song</title>
+    <style>
+        /* Hide the iframe completely */
+        iframe {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
-  <!-- Spotify Embed -->
-  <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4eVS2lXtlb2FCwXAdMhp5k?utm_source=generator" 
-          width="100%" height="152" frameborder="0" 
-          allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-          loading="lazy"></iframe>
+
+    <h2>Guess the Song!</h2>
+    
+    <iframe src="https://open.spotify.com/embed/track/4eVS2lXtlb2FCwXAdMhp5k?utm_source=generator"
+            width="300" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media;">
+    </iframe>
+
 </body>
 </html>
-
