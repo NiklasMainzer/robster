@@ -10,13 +10,6 @@
             padding: 10px 20px;
             cursor: pointer;
         }
-        iframe {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
@@ -24,16 +17,9 @@
     <h2>Guess the Song!</h2>
     <button id="startBtn">Start Music</button>
 
-    <iframe id="spotifyPlayer" src="https://open.spotify.com/embed/track/4eVS2lXtlb2FCwXAdMhp5k?utm_source=generator"
-            width="300" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media;">
-    </iframe>
-
     <script>
         document.getElementById("startBtn").addEventListener("click", function() {
-            const iframe = document.getElementById("spotifyPlayer");
-            iframe.style.width = "1px"; // Keep hidden
-            iframe.style.height = "1px";
-            iframe.style.opacity = "0";
+            window.open("https://open.spotify.com/track/4eVS2lXtlb2FCwXAdMhp5k", "_blank");
             this.style.display = "none"; // Hide button after clicking
         });
     </script>
