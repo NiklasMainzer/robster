@@ -29,27 +29,31 @@
     <button id="setKeys">Set API Keys</button>
     
     <script>
-        async function getSpotifyToken() {
-            let clientId = localStorage.getItem("spotifyClientId");
-            let clientSecret = localStorage.getItem("spotifyClientSecret");
+        const CLIENT_ID = localStorage.getItem("spotifyClientId");
+        const REDIRECT_URI = window.location.origin; 
+        const SCOPES = "streaming user-read-playback-state user-modify-playback-state";
 
-            if (!clientId || !clientSecret) {
-                alert("Please set your API keys first.");
-                return null;
+        async function getSpotifyToken() {
+            let token = localStorage.getItem("spotifyAccessToken");
+
+            if (!token) {
+                const authUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}`;
+                window.location.href = authUrl;
             }
 
-            const response = await fetch("https://accounts.spotify.com/api/token", {
-                method: "POST",
-                headers: {
-                    "Authorization": "Basic " + btoa(clientId + ":" + clientSecret),
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: "grant_type=client_credentials",
-            });
-
-            const data = await response.json();
-            return data.access_token;
+            return token;
         }
+
+        window.onload = () => {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get("access_token");
+
+            if (accessToken) {
+                localStorage.setItem("spotifyAccessToken", accessToken);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        };
 
         function getSongID() {
             const params = new URLSearchParams(window.location.search);
@@ -58,12 +62,10 @@
 
         document.getElementById("setKeys").addEventListener("click", () => {
             const clientId = prompt("Enter your Spotify Client ID:");
-            const clientSecret = prompt("Enter your Spotify Client Secret:");
             
-            if (clientId && clientSecret) {
+            if (clientId) {
                 localStorage.setItem("spotifyClientId", clientId);
-                localStorage.setItem("spotifyClientSecret", clientSecret);
-                alert("Keys saved!");
+                alert("Client ID saved!");
             }
         });
 
