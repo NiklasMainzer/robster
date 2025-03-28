@@ -27,11 +27,13 @@
             background-color: #CC0000;
         }
 
+        /* Initially push the iframe 100vh down */
         iframe {
             border-radius: 12px;
-            margin-top: 200vh;
+            margin-top: 100vh; /* This will push the iframe down by 100vh */
             width: 100%;
             height: 315px;
+            transition: margin-top 0.5s ease; /* Smooth transition for scroll into view */
         }
     </style>
 </head>
@@ -44,18 +46,46 @@
     <iframe id="youtubePlayer" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
 
     <script>
+        // Function to get the video ID from the URL parameter (e.g., ?song=https://www.youtube.com/watch?v=kVRFn4BmDYc)
+        function getVideoIDFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const videoURL = params.get('song');  // Get 'song' parameter from the URL
+            if (videoURL) {
+                const urlParams = new URLSearchParams(new URL(videoURL).search);
+                return urlParams.get('v'); // Get the video ID from the URL
+            }
+            return null; // Return null if no valid song parameter is found
+        }
+
         // Function to start the YouTube video in the iframe
         function startYouTubeIframe(videoID) {
             const iframe = document.getElementById("youtubePlayer");
             
             // Set the iframe source with autoplay enabled
             iframe.src = `https://www.youtube.com/embed/${videoID}?autoplay=1&rel=0`;
+
+            // After the video is loaded, bring the iframe into view
+            iframe.style.marginTop = '50px'; // Adjust this to how far down you want it to move
         }
 
-        // Add event listener to the button
+        // Check if there's a video ID in the URL and load it automatically
+        const videoIDFromURL = getVideoIDFromURL();
+
+        if (videoIDFromURL) {
+            // If there is a valid video ID, load the video directly
+            startYouTubeIframe(videoIDFromURL);
+        }
+
+        // Add event listener to the button to load the video dynamically based on URL
         document.getElementById("playButton").addEventListener("click", () => {
-            const videoID = "97Mj6pXYMd8";  // Your song ID from YouTube URL
-            startYouTubeIframe(videoID);  // Call the function with the video ID
+            const videoIDFromURL = getVideoIDFromURL(); // Get video ID from URL parameter again
+
+            if (videoIDFromURL) {
+                // If valid video ID from URL, load the video
+                startYouTubeIframe(videoIDFromURL);
+            } else {
+                alert("No video URL found in the query string.");
+            }
         });
     </script>
 
