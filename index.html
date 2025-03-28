@@ -8,7 +8,14 @@
     <h1>Guess the Song!</h1>
     <button id="playButton">Press to Play</button>
     <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/06re5XslQ5PFkM3b0Yq4AC?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    
+
+        <script>
+            document.getElementById("playButton").addEventListener("click", () => {
+            loadSong();  // Load the song when button is clicked
+            const player = document.querySelector(".spotify-wrapper");
+            player.scrollIntoView({ behavior: 'smooth' });  // Scroll to the player
+        });
+    </script>
 
 </body>
 </html>
