@@ -55,17 +55,10 @@
             return params.get("song"); // Get ?song=... from the URL
         }
 
-        function forceDesktopMode(embedURL) {
-            return embedURL.replace("/embed/", "/embed/track/");
-        }
-
         function loadSong() {
             const songID = getSongID();
             if (songID) {
-                let embedURL = `https://open.spotify.com/embed/track/${songID}?utm_source=generator`;
-                
-                // Force desktop version
-                embedURL = forceDesktopMode(embedURL);
+                let embedURL = `https://open.spotify.com/embed/track/${songID}`;
 
                 document.getElementById("spotifyPlayer").src = embedURL;
             } else {
