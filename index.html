@@ -32,17 +32,26 @@
     <h2>Guess the Song!</h2>
     <button id="playButton">Play Song</button>
     <button id="setKeys">Set API Keys</button>
-    
+
+    <!-- Hidden Spotify Player -->
     <div id="spotify-player">
-        <!-- Embed Spotify Player (hidden on the page) -->
-        <iframe src="https://open.spotify.com/embed/track/4eVS2lXtlb2FCwXAdMhp5k?utm_source=generator" width="300" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe id="spotifyIframe" src="https://open.spotify.com/embed/track/4eVS2lXtlb2FCwXAdMhp5k?utm_source=generator&autoplay=1" width="300" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
-    
+
     <script>
-        // This is where you would manage API tokens and song plays
+        // Handle the play button click to start the song
         document.getElementById("playButton").addEventListener("click", () => {
+            const iframe = document.getElementById("spotifyIframe");
+            const src = iframe.src;
+
+            // Append the autoplay query if not already present
+            if (!src.includes('autoplay=1')) {
+                iframe.src = src + '&autoplay=1';  // Ensure autoplay works
+            }
+
+            // Optional: You can also use the following to trigger scroll to view if desired
             const player = document.getElementById("spotify-player");
-            player.scrollIntoView({ behavior: 'smooth' }); // Optional, if you want to auto-scroll it into view
+            player.scrollIntoView({ behavior: 'smooth' });
         });
     </script>
 </body>
