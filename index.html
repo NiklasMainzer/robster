@@ -1,73 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Song</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #222;
-            color: white;
-            flex-direction: column;
+<iframe id="spotifyPlayer" frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+</iframe>
+
+<script>
+    function getSongID() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("song");
+    }
+
+    function loadSong() {
+        const songID = getSongID();
+        if (songID) {
+            // Force desktop version of Spotify embed
+            document.getElementById("spotifyPlayer").src = `https://open.spotify.com/embed/track/${songID}?utm_source=generator`;
+        } else {
+            document.body.innerHTML = "<h2>Invalid Song ID</h2>";
         }
+    }
 
-        .spotify-wrapper {
-            position: relative;
-            width: 300px;
-            height: 80px;
-        }
+    // Force desktop mode on mobile
+    if (window.innerWidth < 768) {
+        document.getElementById("spotifyPlayer").src = document.getElementById("spotifyPlayer").src.replace("embed/", "embed/track/");
+    }
 
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 40px;
-            background-color: #222;
-            z-index: 2;
-        }
-
-        iframe {
-            width: 300px;
-            height: 80px;
-            border-radius: 12px;
-            z-index: 1;
-        }
-    </style>
-</head>
-<body>
-
-    <h2>Guess the Song!</h2>
-
-    <div class="spotify-wrapper">
-        <div class="overlay"></div> 
-        <iframe id="spotifyPlayer" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-    </div>
-
-    <script>
-        // Function to get the song ID from the URL
-        function getSongID() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get("song"); // Get ?song=... from the URL
-        }
-
-        // Load the correct song
-        function loadSong() {
-            const songID = getSongID();
-            if (songID) {
-                document.getElementById("spotifyPlayer").src = `https://open.spotify.com/embed/track/${songID}?utm_source=generator`;
-            } else {
-                document.body.innerHTML = "<h2>Invalid Song ID</h2>";
-            }
-        }
-
-        // Run on page load
-        loadSong();
-    </script>
-
-</body>
-</html>
+    loadSong();
+</script>
