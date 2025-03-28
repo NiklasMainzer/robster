@@ -7,15 +7,21 @@
 <body>
     <h1>Guess the Song!</h1>
     <button id="playButton">Press to Play</button>
-    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/06re5XslQ5PFkM3b0Yq4AC?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    
+    <!-- Initially empty iframe -->
+    <iframe id="spotifyPlayer" style="border-radius:12px" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
-        <script>
-            document.getElementById("playButton").addEventListener("click", () => {
-            loadSong();  // Load the song when button is clicked
-            const player = document.querySelector(".spotify-wrapper");
-            player.scrollIntoView({ behavior: 'smooth' });  // Scroll to the player
+    <script>
+        document.getElementById("playButton").addEventListener("click", () => {
+            const iframe = document.getElementById("spotifyPlayer");
+            const songID = "06re5XslQ5PFkM3b0Yq4AC";  // Replace with your desired song ID
+            
+            // Set the src of the iframe to load the song only when the button is clicked
+            iframe.src = `https://open.spotify.com/embed/track/${songID}?utm_source=generator&autoplay=1`;  // Autoplay parameter added
+            
+            // Optional: Scroll to the player to bring it into view
+            iframe.scrollIntoView({ behavior: 'smooth' });
         });
     </script>
-
 </body>
 </html>
