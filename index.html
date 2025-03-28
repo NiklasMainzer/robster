@@ -16,10 +16,28 @@
             text-align: center;
         }
 
+        /* Play Button Styling */
+        #playButton {
+            margin: 20px;
+            padding: 15px 30px;
+            background-color: #1db954;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #playButton:hover {
+            background-color: #1ed760;
+        }
+
+        /* Spotify Player Styling */
         .spotify-wrapper {
             position: relative;
             width: 300px;
             height: 80px;
+            margin-top: 3000px;  /* Push the player far down */
         }
 
         .overlay {
@@ -43,31 +61,37 @@
 <body>
 
     <h2>Guess the Song!</h2>
-    
+    <button id="playButton">Press to Play</button>
+
     <div class="spotify-wrapper">
-        <div class="overlay"></div> 
+        <div class="overlay"></div>
         <iframe id="spotifyPlayer" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     </div>
 
     <script>
+        // Function to extract song ID from URL query parameter
         function getSongID() {
             const params = new URLSearchParams(window.location.search);
             return params.get("song"); // Get ?song=... from the URL
         }
 
+        // Function to load song into the iframe
         function loadSong() {
             const songID = getSongID();
             if (songID) {
                 let embedURL = `https://open.spotify.com/embed/track/${songID}`;
-
                 document.getElementById("spotifyPlayer").src = embedURL;
             } else {
                 document.body.innerHTML = "<h2>Invalid Song ID</h2>";
             }
         }
 
-        // Run on page load
-        loadSong();
+        // Event listener for the play button
+        document.getElementById("playButton").addEventListener("click", () => {
+            loadSong();  // Load the song when button is clicked
+            const player = document.querySelector(".spotify-wrapper");
+            player.scrollIntoView({ behavior: 'smooth' });  // Scroll to the player
+        });
     </script>
 
 </body>
