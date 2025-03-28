@@ -7,52 +7,68 @@
     <style>
         body {
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background-color: #222;
             color: white;
+            flex-direction: column;
             text-align: center;
         }
 
-        button {
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
+        .spotify-wrapper {
+            position: relative;
+            width: 300px;
+            height: 80px;
         }
 
-        /* Push the Spotify embed player out of view */
-        #spotify-player {
-            margin-top: 3000px;  /* Push it very far down */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background-color: #222;
+            z-index: 2;
+        }
+
+        iframe {
+            width: 300px;
+            height: 80px;
+            border-radius: 12px;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <h2>Guess the Song!</h2>
-    <button id="playButton">Play Song</button>
-    <button id="setKeys">Set API Keys</button>
 
-    <!-- Hidden Spotify Player -->
-    <div id="spotify-player">
-        <iframe id="spotifyIframe" src="https://open.spotify.com/embed/track/4eVS2lXtlb2FCwXAdMhp5k?utm_source=generator&autoplay=1" width="300" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <h2>Guess the Song!</h2>
+    
+    <div class="spotify-wrapper">
+        <div class="overlay"></div> 
+        <iframe id="spotifyPlayer" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
     </div>
 
     <script>
-        // Handle the play button click to start the song
-        document.getElementById("playButton").addEventListener("click", () => {
-            const iframe = document.getElementById("spotifyIframe");
-            const src = iframe.src;
+        function getSongID() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get("song"); // Get ?song=... from the URL
+        }
 
-            // Append the autoplay query if not already present
-            if (!src.includes('autoplay=1')) {
-                iframe.src = src + '&autoplay=1';  // Ensure autoplay works
+        function loadSong() {
+            const songID = getSongID();
+            if (songID) {
+                let embedURL = `https://open.spotify.com/embed/track/${songID}`;
+
+                document.getElementById("spotifyPlayer").src = embedURL;
+            } else {
+                document.body.innerHTML = "<h2>Invalid Song ID</h2>";
             }
+        }
 
-            // Optional: You can also use the following to trigger scroll to view if desired
-            const player = document.getElementById("spotify-player");
-            player.scrollIntoView({ behavior: 'smooth' });
-        });
+        // Run on page load
+        loadSong();
     </script>
+
 </body>
 </html>
