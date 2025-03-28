@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guess the Song</title>
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <style>
         body {
             display: flex;
@@ -16,10 +15,16 @@
             color: white;
             text-align: center;
         }
+
         button {
             margin: 10px;
             padding: 10px 20px;
             font-size: 16px;
+        }
+
+        /* Push the Spotify embed player out of view */
+        #spotify-player {
+            margin-top: 3000px;  /* Push it very far down */
         }
     </style>
 </head>
@@ -28,87 +33,16 @@
     <button id="playButton">Play Song</button>
     <button id="setKeys">Set API Keys</button>
     
+    <div id="spotify-player">
+        <!-- Embed Spotify Player (hidden on the page) -->
+        <iframe src="https://open.spotify.com/embed/track/4eVS2lXtlb2FCwXAdMhp5k?utm_source=generator" width="300" height="80" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    
     <script>
-        const CLIENT_ID = localStorage.getItem("spotifyClientId");
-        const REDIRECT_URI = window.location.origin; 
-        const SCOPES = "streaming user-read-playback-state user-modify-playback-state";
-
-        async function getSpotifyToken() {
-            let token = localStorage.getItem("spotifyAccessToken");
-
-            if (!token) {
-                const authUrl = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}`;
-                window.location.href = authUrl;
-            }
-
-            return token;
-        }
-
-        window.onload = () => {
-            const hash = window.location.hash.substring(1);
-            const params = new URLSearchParams(hash);
-            const accessToken = params.get("access_token");
-
-            if (accessToken) {
-                localStorage.setItem("spotifyAccessToken", accessToken);
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-        };
-
-        function getSongID() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get("song");
-        }
-
-        document.getElementById("setKeys").addEventListener("click", () => {
-            const clientId = prompt("Enter your Spotify Client ID:");
-            
-            if (clientId) {
-                localStorage.setItem("spotifyClientId", clientId);
-                alert("Client ID saved!");
-            }
-        });
-
-        window.onSpotifyWebPlaybackSDKReady = async () => {
-            const token = await getSpotifyToken();
-            if (!token) return;
-            
-            const player = new Spotify.Player({
-                name: "Guess The Song Game",
-                getOAuthToken: cb => { cb(token); },
-                volume: 0.5
-            });
-
-            player.addListener("ready", async ({ device_id }) => {
-                console.log("Player ready with device ID:", device_id);
-                playSong(device_id, token);
-            });
-
-            player.connect();
-        };
-
-        async function playSong(device_id, token) {
-            const songID = getSongID();
-            if (!songID) {
-                alert("No song ID provided!");
-                return;
-            }
-
-            await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
-                method: "PUT",
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    uris: [`spotify:track:${songID}`]
-                })
-            });
-        }
-
-        document.getElementById("playButton").addEventListener("click", async () => {
-            const token = await getSpotifyToken();
-            if (!token) return;
+        // This is where you would manage API tokens and song plays
+        document.getElementById("playButton").addEventListener("click", () => {
+            const player = document.getElementById("spotify-player");
+            player.scrollIntoView({ behavior: 'smooth' }); // Optional, if you want to auto-scroll it into view
         });
     </script>
 </body>
