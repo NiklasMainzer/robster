@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="us">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Robster - Guess the Song</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Spotify Iframe</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +12,7 @@
             text-align: center;
             padding-top: 50px;
         }
-        
+
         button {
             background-color: #1db954;
             color: white;
@@ -31,30 +32,30 @@
             margin-top: 50px;
             width: 100%;
             height: 152px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
         }
     </style>
 </head>
 <body>
 
-    <h1>Guess the Song!</h1>
+    <h1>Start Spotify Iframe</h1>
     <button id="playButton">Press to Play</button>
     
     <!-- Initially empty iframe, src will be set dynamically -->
     <iframe id="spotifyPlayer" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
     <script>
-        document.getElementById("playButton").addEventListener("click", () => {
+        // Function to start the Spotify iframe
+        function startSpotifyIframe(songID) {
             const iframe = document.getElementById("spotifyPlayer");
-            const songID = "06re5XslQ5PFkM3b0Yq4AC";  // Replace with your desired song ID
             
-            // Set the iframe src with autoplay enabled when the button is clicked
+            // Set the iframe source with autoplay enabled
             iframe.src = `https://open.spotify.com/embed/track/${songID}?utm_source=generator&autoplay=1`;
-            
-            // Optionally, scroll the iframe into view if it’s far down the page
-            iframe.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Add event listener to the button
+        document.getElementById("playButton").addEventListener("click", () => {
+            const songID = "06re5XslQ5PFkM3b0Yq4AC";  // Replace with the actual song ID you want to play
+            startSpotifyIframe(songID);  // Call the function with the song ID
         });
     </script>
 
