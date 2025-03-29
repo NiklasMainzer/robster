@@ -16,6 +16,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
 
         h1 {
@@ -49,10 +50,12 @@
 
         iframe {
             position: absolute;
-            top: -9999px;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 0;
-            opacity: 0;
+            height: 100%;
+            border: none;
+            display: none;
         }
 
         @keyframes fadeIn {
@@ -88,11 +91,21 @@
         function startYouTubeIframe(videoID) {
             const iframe = document.getElementById("youtubePlayer");
             iframe.src = `https://www.youtube.com/embed/${videoID}?autoplay=1&rel=0`;
+            iframe.style.display = "block";
+            enterFullScreen();
         }
 
-        const videoIDFromURL = getVideoIDFromURL();
-        if (videoIDFromURL) {
-            startYouTubeIframe(videoIDFromURL);
+        function enterFullScreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) {
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
         }
 
         document.getElementById("playButton").addEventListener("click", () => {
