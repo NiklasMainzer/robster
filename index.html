@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robster</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#252538">
+    <title>Guess That Tune</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -81,7 +79,7 @@
 </head>
 <body>
     <div class="background-overlay"></div>
-    <h1>🎵 Robster 🎵</h1>
+    <h1>🎵 Guess That Tune 🎵</h1>
     <div class="button-container">
         <button id="playButton">Play Song</button>
     </div>
@@ -89,25 +87,30 @@
     <iframe id="youtubePlayer" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
 
     <script>
+        // Get video ID from the URL hash or query string
         function getVideoIDFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            const videoURL = params.get('song');
+            const hashParams = new URLSearchParams(window.location.hash.substr(1)); // Handle hash part
+            const videoURL = hashParams.get('song');  // Look for 'song' parameter in hash
+
             if (videoURL) {
                 try {
                     const urlParams = new URLSearchParams(new URL(videoURL).search);
-                    return urlParams.get('v');
+                    return urlParams.get('v');  // Extract video ID
                 } catch (error) {
-                    console.error("Invalid URL format");
+                    return null;
                 }
             }
             return null;
         }
 
+        // Start the YouTube video in the iframe (hidden)
         function startYouTubeIframe(videoID) {
             const iframe = document.getElementById("youtubePlayer");
             iframe.src = `https://www.youtube.com/embed/${videoID}?autoplay=1&rel=0&controls=0&modestbranding=1&showinfo=0`;
+            enterFullScreen();
         }
 
+        // Handle fullscreen mode
         function enterFullScreen() {
             const elem = document.documentElement;
             if (elem.requestFullscreen) {
@@ -121,28 +124,21 @@
             }
         }
 
-         if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("service-worker.js").then(() => {
-            console.log("Service Worker Registered");
-        }).catch((error) => {
-            console.log("Service Worker Registration failed: ", error);
-        });
-        }
-
-        document.getElementById("playButton").addEventListener("click", () => {
-            const videoID = getVideoIDFromURL();
-            if (videoID) {
-                startYouTubeIframe(videoID);
-                enterFullScreen();
-            } else {
-                alert("No video URL found in the query string.");
-            }
-        });
-
+        // Wait for hashchange (when QR code is scanned)
         window.addEventListener("hashchange", () => {
             const videoID = getVideoIDFromURL();
             if (videoID) {
                 startYouTubeIframe(videoID);
+            }
+        });
+
+        // Handle play button click (to start the video)
+        document.getElementById("playButton").addEventListener("click", () => {
+            const videoID = getVideoIDFromURL();
+            if (videoID) {
+                startYouTubeIframe(videoID);
+            } else {
+                alert("No video URL found in the query string.");
             }
         });
     </script>
