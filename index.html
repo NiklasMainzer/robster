@@ -87,33 +87,26 @@
     <iframe id="youtubePlayer" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
 
     <script>
-        // Function to get video ID from the URL hash
         function getVideoIDFromURL() {
-            const hash = window.location.hash;  // Get the full hash part of the URL
-            const params = new URLSearchParams(hash.substring(1));  // Strip off the # and parse the hash
-            const videoURL = params.get('song');  // Get the video URL part from the hash
-
+            const params = new URLSearchParams(window.location.search);
+            const videoURL = params.get('song');
             if (videoURL) {
                 try {
-                    // Extract the video ID from the YouTube URL
                     const urlParams = new URLSearchParams(new URL(videoURL).search);
-                    return urlParams.get('v');  // Return the video ID
+                    return urlParams.get('v');
                 } catch (error) {
-                    console.error("Invalid YouTube URL:", error);
-                    return null;
+                    console.error("Invalid URL format");
                 }
             }
-            return null;  // If no video URL is found
+            return null;
         }
 
-        // Function to start the YouTube video in the iframe (hidden)
         function startYouTubeIframe(videoID) {
             const iframe = document.getElementById("youtubePlayer");
             iframe.src = `https://www.youtube.com/embed/${videoID}?autoplay=1&rel=0&controls=0&modestbranding=1&showinfo=0`;
             enterFullScreen();
         }
 
-        // Function to enable fullscreen mode
         function enterFullScreen() {
             const elem = document.documentElement;
             if (elem.requestFullscreen) {
@@ -127,15 +120,6 @@
             }
         }
 
-        // Wait for hashchange (when QR code is scanned)
-        window.addEventListener("hashchange", () => {
-            const videoID = getVideoIDFromURL();
-            if (videoID) {
-                startYouTubeIframe(videoID);
-            }
-        });
-
-        // Handle play button click (to start the video)
         document.getElementById("playButton").addEventListener("click", () => {
             const videoID = getVideoIDFromURL();
             if (videoID) {
