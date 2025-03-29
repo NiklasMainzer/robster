@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess That Tune</title>
+    <title>Robster</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -79,7 +79,7 @@
 </head>
 <body>
     <div class="background-overlay"></div>
-    <h1>🎵 Guess That Tune 🎵</h1>
+    <h1>🎵 Robster 🎵</h1>
     <div class="button-container">
         <button id="playButton">Play Song</button>
     </div>
@@ -104,7 +104,6 @@
         function startYouTubeIframe(videoID) {
             const iframe = document.getElementById("youtubePlayer");
             iframe.src = `https://www.youtube.com/embed/${videoID}?autoplay=1&rel=0&controls=0&modestbranding=1&showinfo=0`;
-            enterFullScreen();
         }
 
         function enterFullScreen() {
@@ -124,8 +123,16 @@
             const videoID = getVideoIDFromURL();
             if (videoID) {
                 startYouTubeIframe(videoID);
+                enterFullScreen();
             } else {
                 alert("No video URL found in the query string.");
+            }
+        });
+
+        window.addEventListener("hashchange", () => {
+            const videoID = getVideoIDFromURL();
+            if (videoID) {
+                startYouTubeIframe(videoID);
             }
         });
     </script>
